@@ -1,0 +1,28 @@
+{
+  "name": "kanban_board",
+  "version": "1.0.0",
+  "description": "My fabulous Nuxt.js project",
+  "author": "pei",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt-ts",
+    "build": "nuxt-ts build",
+    "start": "nuxt-ts start --hostname 0.0.0.0 --port 80",
+    "generate_static": "nuxt-ts generate"
+  },
+  "dependencies": {
+    "@nuxt/typescript-runtime": "^0.3.8",
+    "nuxt": "^2.10.0",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^8.6.2",
+    "tsyringe": "^4.0.1",
+    "vue-property-decorator": "^8.4.0"
+  },
+  "devDependencies": {
+    "@nuxt/typescript": "^2.8.1",
+    "@nuxt/typescript-build": "^0.5.6",
+    "@nuxtjs/eslint-module": "^1.1.0",
+    "@nuxtjs/vuetify": "^1.0.0",
+    "eslint": "^6.8.0"
+  }
+}

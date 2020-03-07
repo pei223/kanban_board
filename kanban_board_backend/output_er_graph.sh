@@ -1,0 +1,1 @@
+python manage.py graph_models -a -g -o graph-model.pdf
