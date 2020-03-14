@@ -6,7 +6,7 @@ export default interface KanbanRepository {
 }
 
 @injectable()
-export class KanbanRepositoryImpl {
+export class KanbanRepositoryImpl implements KanbanRepository {
   read() {
     return [
       { id: 1, title: "hoge", point: 12 },
@@ -20,7 +20,7 @@ export class KanbanRepositoryImpl {
 }
 
 @injectable()
-export class KanbanRepositoryMock {
+export class KanbanRepositoryMock implements KanbanRepository {
   data: Array<any>;
   constructor() {
     this.data = [

@@ -42,7 +42,10 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: [
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
+  ],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
@@ -76,5 +79,14 @@ export default {
   typescript: {
     typeCheck: true,
     ignoreNotFoundWarnings: true
-  }
+  },
+   
+  proxy: {
+    '/api/': {
+      target: 'http://localhost:8000',
+      pathRewrite: {
+        '^/api/': '/api/',
+      },
+    }
+  },
 };

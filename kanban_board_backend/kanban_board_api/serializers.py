@@ -27,7 +27,7 @@ class TicketSerializer(serializers.ModelSerializer):
 class ProjectInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProjectInfo
-        fields = ('project_name',)
+        fields = ('id', 'project_name',)
 
 
 class SprintInfoSerializer(serializers.ModelSerializer):
