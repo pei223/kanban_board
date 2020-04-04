@@ -2,6 +2,17 @@ from django.db import models
 from django.db.models import Max
 
 
+class TicketQuerySet(models.QuerySet):
+    def max_order_num(self):
+        result = self.aggregate(Max('order'))
+        if not result['order__max']:
+            return 0
+        return result['order__max']
+
+    def active_sprint_tickets(self):
+        return self.filter(sprint_id__is_active=True)
+
+
 class ProjectInfo(models.Model):
     project_name = models.CharField(max_length=200)
 
@@ -24,11 +35,4 @@ class Ticket(models.Model):
     tag_1 = models.CharField(max_length=100, blank=True)
     tag_2 = models.CharField(max_length=1000, blank=True)
 
-    def new_order(self):
-        result = Ticket.objects.all().aggregate(Max('order'))
-        if not result['order__max']:
-            return 1
-        return result['order__max'] + 1
-
-    def active_sprint_tickets(self):
-        return Ticket.objects.all().filter(sprint_id__is_active=True)
+    objects = TicketQuerySet.as_manager()

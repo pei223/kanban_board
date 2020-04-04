@@ -21,6 +21,6 @@ class TicketViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, url_name='active_sprint', methods=['GET'])
     def active_sprint(self, request):
-        data = Ticket().active_sprint_tickets()
+        data = Ticket.objects.active_sprint_tickets()
         serializer = self.get_serializer(data, many=True)
         return Response(serializer.data)

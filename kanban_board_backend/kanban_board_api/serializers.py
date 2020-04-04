@@ -19,7 +19,7 @@ class TicketSerializer(serializers.ModelSerializer):
             tag_1=validated_data['tag_1'],
             tag_2=validated_data['tag_2'],
         )
-        ticket.order = Ticket().new_order()
+        ticket.order = Ticket.objects.max_order_num() + 1
         ticket.save()
         return ticket
 
