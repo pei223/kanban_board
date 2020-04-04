@@ -1,7 +1,8 @@
+import projectStore from "../store/project_store";
 import ProjectRepository from "../repository/project_repository";
 import container from "../injection.config";
 
-export default class KanbanDetailPresenter {
+export default class ProjectPresenter {
   readonly repository: ProjectRepository;
 
   constructor() {
@@ -9,6 +10,7 @@ export default class KanbanDetailPresenter {
   }
 
   async read() {
-    return await this.repository.read();
+    let data = await this.repository.read();
+    projectStore.setProjects(data);
   }
 }
