@@ -4,6 +4,7 @@
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-select
+          v-model="selected_project_id"
           class="project-select-box"
           background-color="transparent"
           :items="projects"
@@ -13,9 +14,6 @@
           solo
           @change="onSelected"
         ></v-select>
-        <v-btn text @click.native="onLinkClicked('/kanban');">
-          <span class="app-bar-link">カンバン</span>
-        </v-btn>
       </v-toolbar-items>
     </v-app-bar>
 </template>
@@ -24,7 +22,8 @@ export default {
     props: {
         projects: Array,
         onSelected: Function,
-        onLinkClicked: Function
+        onLinkClicked: Function,
+        selected_project_id: Number,
     },
 }
 </script>
@@ -46,7 +45,6 @@ export default {
 .v-input__control > .v-text-field__details {
   display: none;
 }
-
 
 .app-bar-link {
   color: white !important;

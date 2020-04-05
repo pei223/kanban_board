@@ -1,4 +1,6 @@
 from rest_framework import viewsets
+from rest_framework.exceptions import ParseError
+
 from .models import ProjectInfo, Ticket, SprintInfo
 from .serializers import ProjectInfoSerializer, TicketSerializer, SprintInfoSerializer
 from rest_framework.decorators import action
@@ -21,6 +23,13 @@ class TicketViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, url_name='active_sprint', methods=['GET'])
     def active_sprint(self, request):
-        data = Ticket.objects.active_sprint_tickets()
+        project_id = request.GET.get('project_id')
+        if project_id is None:
+            raise ParseError('Require project id.')
+        data = Ticket.objects.active_sprint_tickets(project_id)
         serializer = self.get_serializer(data, many=True)
-        return Response(serializer.data)
+        result = {"tickets": serializer.data}
+        sprint_name = SprintInfo.objects.active_sprint_name(project_id)
+        if sprint_name:
+            result["sprint_name"] = sprint_name
+        return Response(result)

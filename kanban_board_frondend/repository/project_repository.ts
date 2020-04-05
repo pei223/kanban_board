@@ -3,23 +3,35 @@ import axios from "axios";
 
 export default interface ProjectRepository {
   read(): any;
-  findDetail(id: number): any;
+  find(id: number): any;
+  create(projectName: string): any;
+  update(id: number, projectName: string): any;
 }
 
 @injectable()
 export class ProjectRepositoryImpl implements ProjectRepository {
   async read() {
-    try {
-      let result = await axios.get("/api/project/");
-      return result.data;
-    } catch (error) {
-      console.log(error);
-      return "";
-    }
+    let result = await axios.get("/api/project/");
+    return result.data;
   }
 
-  findDetail(id: number): any {
-    return null;
+  async find(id: number) {
+    let result = await axios.get(`/api/project/${id}`);
+    return result.data;
+  }
+
+  async create(projectName: string) {
+    await axios.post("/api/project/", {
+      project_name: projectName
+    });
+    return true;
+  }
+
+  async update(id: number, projectName: string) {
+    await axios.put(`/api/project/${id}/`, {
+      project_name: projectName
+    });
+    return true;
   }
 }
 
@@ -37,7 +49,7 @@ export class ProjectRepositoryMock implements ProjectRepository {
     return this.data;
   }
 
-  findDetail(id: number): any {
+  find(id: number): any {
     let findedData = this.data.filter(row => {
       return id === row.id;
     });
@@ -45,5 +57,15 @@ export class ProjectRepositoryMock implements ProjectRepository {
       return findedData[0];
     }
     return null;
+  }
+
+  create(projectName: string) {
+    this.data.push({ id: 3, project_name: projectName });
+    return true;
+  }
+
+  update(id: number, projectName: string) {
+    this.data[id] = { id: id, project_name: projectName };
+    return true;
   }
 }

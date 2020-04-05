@@ -13,4 +13,26 @@ export default class ProjectPresenter {
     let data = await this.repository.read();
     projectStore.setProjects(data);
   }
+
+  async selectProject(projectId: number) {
+    projectStore.setSelectedProjectId(projectId);
+  }
+
+  async find(projectId: number) {
+    let projects = projectStore.state.projects.filter(project => {
+      return project["id"] === projectId;
+    });
+    if (projects.length > 0) {
+      return projects[0];
+    }
+    return this.repository.find(projectId);
+  }
+
+  async create(projectName: string): Promise<boolean> {
+    return this.repository.create(projectName);
+  }
+
+  async update(id: number, projectName: string): Promise<boolean> {
+    return this.repository.update(id, projectName);
+  }
 }

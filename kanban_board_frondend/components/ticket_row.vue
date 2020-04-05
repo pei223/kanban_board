@@ -11,7 +11,7 @@
             <v-spacer></v-spacer>
             <v-col md="auto">
                 <v-chip class="ma-2">
-                    {{ item.point }}
+                    {{ item.story_point }}
                 </v-chip>
             </v-col>
          </v-row>
@@ -23,8 +23,8 @@
 export default {
     props: ['item'],
     methods: {
-        link(page) {
-            this.$router.push(page)
+        link(ticketId) {
+            this.$router.push(ticketId)
         }
     }
 };

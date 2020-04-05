@@ -1,10 +1,6 @@
 <template>
-  <div>
-    <div v-if="values.ticket === null">
-      <div v-if="values.failedLoad">
-        <p>データの読み込みに失敗しました</p>
-      </div>
-      <div v-else class="progress-box">
+    <div>
+      <div v-if="values.loading" class="progress-box">
         <v-progress-circular
           :size="70"
           :width="7"
@@ -13,35 +9,45 @@
           style="vertical-align: middle"
         ></v-progress-circular>
       </div>
-    </div>
-    <v-layout v-else column justify-center align-center v-model="ticket">
+      <v-layout v-else column justify-center align-center v-model="ticket">
       <v-container xs12 sm10 md10>
         <v-card width="100%" color="white">
           <v-card-title style="color: black"> {{ values.ticket.title }}</v-card-title>
         </v-card>
       </v-container>
     </v-layout>
+    <div v-if="values.failed">
+      <p>データの読み込みに失敗しました</p>
+    </div>
   </div>
 </template>
 
 <script>
 import "reflect-metadata";
-import KanbanDetailPresenter from "~/presenter/kanban_detail_presenter";
+import BacklogPresenter from "~/presenter/backlog_presenter";
 
 export default {
   data() {
     return {
       id: this.$route.params.id,
-      presenter: new KanbanDetailPresenter(),
+      presenter: new BacklogPresenter(),
       values: {
           ticket: null,
-          failedLoad: false
+          loading: true,
+          failed: false,
       },
     };
   },
-
   beforeMount() {
-      this.$set(this.values, "ticket", this.presenter.findDetail(parseInt(this.id)))
+    if (this.id === "new") {  // 新規チケット
+      this.$set(this.values, "loading", false)
+      this.$set(this.values, "ticket", {title: ""})
+      return;
+    }
+    this.presenter.find(parseInt(this.id)).then((data) => {
+      this.$set(this.values, "ticket", data)
+      this.$set(this.values, "loading", false)
+    })
   },
   methods: {}
 };

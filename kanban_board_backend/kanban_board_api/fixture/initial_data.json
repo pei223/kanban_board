@@ -1,0 +1,117 @@
+[
+  {
+    "model": "kanban_board_api.projectinfo",
+    "pk": 1,
+    "fields": {
+      "project_name": "TestProject 1"
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 1,
+    "fields": {
+      "name": "TestProject1 Sprint1",
+      "is_active": true,
+      "is_closed": false,
+      "project_id": 1
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 2,
+    "fields": {
+      "name": "TestProject1 Sprint2",
+      "is_active": false,
+      "is_closed": false,
+      "project_id": 1
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 3,
+    "fields": {
+      "name": "TestProject1 Sprint3",
+      "is_active": false,
+      "is_closed": false,
+      "project_id": 1
+    }
+  },
+
+
+  {
+    "model": "kanban_board_api.projectinfo",
+    "pk": 2,
+    "fields": {
+      "project_name": "TestProject 2"
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 1,
+    "fields": {
+      "name": "TestProject2 Sprint1",
+      "is_active": false,
+      "is_closed": true,
+      "project_id": 2
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 2,
+    "fields": {
+      "name": "TestProject2 Sprint2",
+      "is_active": true,
+      "is_closed": false,
+      "project_id": 2
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 3,
+    "fields": {
+      "name": "TestProject2 Sprint3",
+      "is_active": false,
+      "is_closed": false,
+      "project_id": 2
+    }
+  },
+
+
+  {
+    "model": "kanban_board_api.projectinfo",
+    "pk": 3,
+    "fields": {
+      "project_name": "TestProject 3"
+    }
+  },
+    {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 1,
+    "fields": {
+      "name": "TestProject2 Sprint1",
+      "is_active": false,
+      "is_closed": true,
+      "project_id": 3
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 2,
+    "fields": {
+      "name": "TestProject2 Sprint2",
+      "is_active": false,
+      "is_closed": true,
+      "project_id": 3
+    }
+  },
+  {
+    "model": "kanban_board_api.sprintinfo",
+    "pk": 3,
+    "fields": {
+      "name": "TestProject3 Sprint3",
+      "is_active": false,
+      "is_closed": false,
+      "project_id": 3
+    }
+  },
+]

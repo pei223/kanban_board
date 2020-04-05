@@ -6,7 +6,7 @@ class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = ('id', 'title', 'sprint_id', 'description', 'kind',
-                  'release_version', 'story_point', 'tag_1', 'tag_2')
+                  'release_version', 'story_point', 'tag_1', 'tag_2', 'status')
 
     def create(self, validated_data):
         ticket = Ticket(
@@ -18,6 +18,7 @@ class TicketSerializer(serializers.ModelSerializer):
             release_version=validated_data['release_version'],
             tag_1=validated_data['tag_1'],
             tag_2=validated_data['tag_2'],
+            status=validated_data['status'],
         )
         ticket.order = Ticket.objects.max_order_num() + 1
         ticket.save()

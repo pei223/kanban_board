@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Header :projects="sharedState.projects" :on-selected="onProjectSelectChanged" :on-link-clicked="link" />
+    <Header :projects="sharedState.projects" :on-selected="onProjectSelectChanged" :on-link-clicked="link" :selected-value="sharedState.selected_project_id" />
     <v-content>
       <v-container>
         <nuxt />
@@ -33,7 +33,8 @@ export default {
       this.$parent.$router.push(toLink);
     },
     onProjectSelectChanged(selectedProject) {
-      console.log(selectedProject);
+      this.projectPresenter.selectProject(parseInt(selectedProject))
+      this.$parent.$router.push(`/backlog/${projectStore.state.selected_project_id}`);
     },
   }
 };
