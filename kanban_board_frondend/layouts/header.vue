@@ -1,10 +1,10 @@
 <template>
     <v-app-bar app color="indigo">
-      <v-toolbar-title>Kanban board</v-toolbar-title>
+      <v-app-bar-nav-icon @click="onMenuClicked"></v-app-bar-nav-icon>
+      <v-toolbar-title style="margin-left: 10px">Kanban board</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
         <v-select
-          v-model="selected_project_id"
           class="project-select-box"
           background-color="transparent"
           :items="projects"
@@ -23,6 +23,7 @@ export default {
         projects: Array,
         onSelected: Function,
         onLinkClicked: Function,
+        onMenuClicked: Function,
         selected_project_id: Number,
     },
 }

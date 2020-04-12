@@ -6,6 +6,7 @@ export default interface ProjectRepository {
   find(id: number): any;
   create(projectName: string): any;
   update(id: number, projectName: string): any;
+  delete(id: number): any;
 }
 
 @injectable()
@@ -32,6 +33,10 @@ export class ProjectRepositoryImpl implements ProjectRepository {
       project_name: projectName
     });
     return true;
+  }
+
+  async delete(id: number) {
+    await axios.delete(`/api/project/${id}`);
   }
 }
 
@@ -67,5 +72,13 @@ export class ProjectRepositoryMock implements ProjectRepository {
   update(id: number, projectName: string) {
     this.data[id] = { id: id, project_name: projectName };
     return true;
+  }
+
+  delete(id: number) {
+    this.data.forEach((elem, i) => {
+      if (elem.id === id) {
+        this.data.splice(id, 1);
+      }
+    });
   }
 }

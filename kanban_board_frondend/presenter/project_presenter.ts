@@ -35,4 +35,9 @@ export default class ProjectPresenter {
   async update(id: number, projectName: string): Promise<boolean> {
     return this.repository.update(id, projectName);
   }
+
+  async delete(id: number) {
+    await this.repository.delete(id);
+    this.read();
+  }
 }

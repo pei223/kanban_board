@@ -1,6 +1,17 @@
 <template>
   <v-app>
-    <Header :projects="sharedState.projects" :on-selected="onProjectSelectChanged" :on-link-clicked="link" :selected-value="sharedState.selected_project_id" />
+    <v-navigation-drawer
+      v-model="isDrawerOpen"
+      absolute
+      temporary>
+      <SideBar />
+    </v-navigation-drawer>
+    <Header 
+      :projects="sharedState.projects"
+      :on-selected="onProjectSelectChanged"
+      :on-link-clicked="link"
+      :on-menu-clicked="() => isDrawerOpen = !isDrawerOpen"
+      :selected-value="sharedState.selected_project_id" />
     <v-content>
       <v-container>
         <nuxt />
@@ -14,10 +25,12 @@ import "reflect-metadata"
 import ProjectPresenter from '~/presenter/project_presenter'
 import projectStore from '../store/project_store'
 import Header from './header'
+import SideBar from './sidebar'
 
 export default {
   data() {
     return {
+      isDrawerOpen: false,
       projectPresenter: new ProjectPresenter(),
       sharedState: projectStore.state,
     };
@@ -26,6 +39,7 @@ export default {
     this.projectPresenter.read()
   },
   components: {
+    SideBar,
     Header
   },
   methods: {
