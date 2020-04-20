@@ -4,6 +4,14 @@
       <v-toolbar-title style="margin-left: 10px">Kanban board</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
+        <v-btn
+          class="header-btn"
+          @click="onLinkClicked(`/sprint_list/${selected_project_id}`)"
+        >スプリント一覧</v-btn>
+        <v-btn
+          class="header-btn"
+          @click="onLinkClicked(`/backlog/${selected_project_id}?sprint_id=active`)"
+        >Backlog</v-btn>
         <v-select
           class="project-select-box"
           background-color="transparent"
@@ -12,6 +20,7 @@
           item-value="id"
           label="プロジェクト"
           solo
+          :value="selected_project_id"
           @change="onSelected"
         ></v-select>
       </v-toolbar-items>
@@ -52,5 +61,9 @@ export default {
   height: 100%;
   font-size: 1.2em;
   text-decoration: none;
+}
+
+.header-btn {
+  background-color: transparent !important;
 }
 </style>

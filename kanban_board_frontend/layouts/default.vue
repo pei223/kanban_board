@@ -7,11 +7,11 @@
       <SideBar />
     </v-navigation-drawer>
     <Header 
-      :projects="sharedState.projects"
+      :projects="projectState.projects"
       :on-selected="onProjectSelectChanged"
       :on-link-clicked="link"
       :on-menu-clicked="() => isDrawerOpen = !isDrawerOpen"
-      :selected-value="sharedState.selected_project_id" />
+      :selected_project_id="projectState.selected_id" />
     <v-content>
       <v-container>
         <nuxt />
@@ -32,7 +32,7 @@ export default {
     return {
       isDrawerOpen: false,
       projectPresenter: new ProjectPresenter(),
-      sharedState: projectStore.state,
+      projectState: projectStore.state,
     };
   },
   mounted() {
@@ -48,7 +48,7 @@ export default {
     },
     onProjectSelectChanged(selectedProject) {
       this.projectPresenter.selectProject(parseInt(selectedProject))
-      this.$parent.$router.push(`/backlog/${projectStore.state.selected_project_id}`);
+      this.$parent.$router.push(`/backlog/${projectStore.state.selected_id}?sprint_id=active`);
     },
   }
 };

@@ -15,7 +15,7 @@ export default class ProjectPresenter {
   }
 
   async selectProject(projectId: number) {
-    projectStore.setSelectedProjectId(projectId);
+    projectStore.setSelectedId(projectId);
   }
 
   async find(projectId: number) {

@@ -1,13 +1,26 @@
+import { isPositiveInteger } from "~/utils/number_util";
+
 let projectStore = {
   state: {
     projects: [],
-    selected_project_id: 0
+    selected_id: 0,
+    selected_name: "",
   },
   setProjects(projects) {
     this.state.projects = projects;
   },
-  setSelectedProjectId(projectId) {
-    this.state.selected_project_id = projectId
+  setSelectedId(projectId) {
+    if (!isPositiveInteger(projectId)){
+      return
+    }
+    this.state.selected_id = parseInt(projectId)
+
+    this.state.projects.forEach((project) => {
+      if (project.id === projectId) {
+        this.state.selected_name = project.project_name
+        return
+      }
+    })
   }
 };
 

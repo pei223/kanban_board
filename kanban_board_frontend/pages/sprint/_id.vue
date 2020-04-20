@@ -2,9 +2,19 @@
   <v-layout column justify-center align-center>
     <v-container xs12 sm10 md10>
       <v-card width="100%" class="pa-4">
+        <v-select
+          label="プロジェクト"
+          background-color="transparent"
+          :items="projectState.projects"
+          item-text="project_name"
+          item-value="id"
+          solo
+          v-model="selected_project_id"
+          class="mb-6"
+        ></v-select>
         <v-text-field
-          v-model="project_name"
-          label="プロジェクト名" class="mb-6" />
+          v-model="sprint_name"
+          label="スプリント名" class="mb-6" />
         <v-btn v-on:click="submit" color="indigo">
           <span v-if="id === 'new'">登録</span>
           <span v-else>更新</span>
@@ -21,10 +31,10 @@
       <v-card>
         <v-card-title
           primary-title>
-        プロジェクト削除
+        スプリント削除
         </v-card-title>
         <v-card-text>
-          プロジェクト　{{ project_name }}　を削除します。よろしいですか？
+          スプリント　{{ sprint_name }}　を削除します。よろしいですか？
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -45,24 +55,27 @@
 
 <script>
 import "reflect-metadata"
-import ProjectPresenter from '~/presenter/project_presenter'
+import SprintPresenter from '~/presenter/sprint_presenter'
+import projectStore from '../../store/project_store'
 
 export default {
   data() {
     return {
         id: this.$route.params.id,
-        presenter: new ProjectPresenter(),
-        project_name: "",
+        presenter: new SprintPresenter(),
+        projectState: projectStore.state,
+        selected_project_id: null,
+        sprint_name: "",
         show_confirm_delete_dialog: false,
         show_progress: false
     };
   },
   beforeMount() {
-    if (this._isNewProject()) {
+    if (this._isNewSprint()) {
         return
     }
     this.presenter.find(this.id).then((data) => {
-        this.project_name = data.project_name
+        this.sprint_name = data.name
     }).catch((error) => {
         this.id = "new"
     })
@@ -70,26 +83,26 @@ export default {
   methods: {
       submit() {
         this.show_progress = true
-        if (this._isNewProject()) {
-            this.presenter.create(this.project_name).then((result)=>{
+        if (this._isNewSprint()) {
+            this.presenter.create(this.sprint_name, this.selected_project_id).then((result)=>{
                 this.presenter.read()
-                this.$parent.$router.push(`/projects`);
+                this.$parent.$router.push(`/backlog/${this.id}`);
             }).catch((error) => {
-              window.alert("プロジェクト登録に失敗しました.")
+              window.alert("スプリント登録に失敗しました.")
               this.show_progress = false
             })
             return
         }
-        this.presenter.update(this.id, this.project_name).then((result)=>{
+        this.presenter.update(this.id, this.sprint_name).then((result)=>{
             this.presenter.read()
             this.$parent.$router.push(`/backlog/${this.id}`);
         }).catch((error) => {
-            window.alert("プロジェクト更新に失敗しました.")
+            window.alert("スプリント更新に失敗しました.")
         })  
       },
       onDeleteClicked() {
         this.show_progress = true
-        if (this._isNewProject()) {
+        if (this._isNewSprint()) {
           return
         }
         this.presenter.delete(this.id).then((result) => {
@@ -99,7 +112,7 @@ export default {
           window.alert("プロジェクト削除に失敗しました.")
         })
       },
-      _isNewProject() {
+      _isNewSprint() {
         return this.id === "new"
       }
   },
