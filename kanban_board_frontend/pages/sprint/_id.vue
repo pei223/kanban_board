@@ -9,6 +9,7 @@
           item-text="project_name"
           item-value="id"
           solo
+          readonly
           v-model="selected_project_id"
           class="mb-6"
         ></v-select>
@@ -71,7 +72,8 @@ export default {
     };
   },
   beforeMount() {
-    if (this._isNewSprint()) {
+    this.selected_project_id = this.projectState.selected_id
+    if (this.isNewSprint()) {
         return
     }
     this.presenter.find(this.id).then((data) => {
@@ -83,7 +85,7 @@ export default {
   methods: {
       submit() {
         this.show_progress = true
-        if (this._isNewSprint()) {
+        if (this.isNewSprint()) {
             this.presenter.create(this.sprint_name, this.selected_project_id).then((result)=>{
                 this.presenter.read()
                 this.$parent.$router.push(`/sprint_list/${this.projectState.selected_id}`);
@@ -102,7 +104,7 @@ export default {
       },
       onDeleteClicked() {
         this.show_progress = true
-        if (this._isNewSprint()) {
+        if (this.isNewSprint()) {
           return
         }
         this.presenter.delete(this.id).then((result) => {
@@ -112,7 +114,7 @@ export default {
           window.alert("プロジェクト削除に失敗しました.")
         })
       },
-      _isNewSprint() {
+      isNewSprint() {
         return this.id === "new"
       }
   },

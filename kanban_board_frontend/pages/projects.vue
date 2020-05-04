@@ -1,7 +1,7 @@
 <template>
   <v-layout column justify-center align-center>
     <v-container x12 sm10 md10>
-      <h2>プロジェクト管理</h2>
+      <h2>プロジェクト一覧</h2>
       <v-card width="100%">
         <v-list>
           <template v-for="(item, index) in sharedState.projects">

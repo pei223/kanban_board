@@ -31,10 +31,11 @@
 export default {
     data() {
         return {
+            // TODO ユーザー情報
             user_icon_url: "https://randomuser.me/api/portraits/men/81.jpg",
             user_name: "UserName",
             items: [
-                {icon: "mdi-view-list", title: "プロジェクト管理", path: "/projects"},
+                {icon: "mdi-view-list", title: "プロジェクト一覧", path: "/projects"},
             ]
         }
     },    
