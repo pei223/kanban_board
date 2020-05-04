@@ -12,6 +12,10 @@ export default class BacklogPresenter {
     return this.repository.readActiveSprint(projectId);
   }
 
+  read(sprintId: number, projectId: number): any {
+    return this.repository.read(sprintId, projectId);
+  }
+
   async find(ticketId: number) {
     return this.repository.find(ticketId);
   }

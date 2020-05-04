@@ -3,6 +3,8 @@
     <v-container x12 sm10 md10>
       <h2>{{ projectState.selected_name }} スプリント一覧</h2>
       <v-card width="100%">
+        <v-card-title v-if="items === null"></v-card-title>
+        <v-card-title v-else-if="items.length === 0">スプリントはありません</v-card-title>
         <v-list>
           <template v-for="(item, index) in items">
             <SprintRow :key=index :item=item />
@@ -23,6 +25,13 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
     </v-fab-transition>
+    <v-progress-circular
+      v-model="show_progress"
+      v-if="show_progress"
+      :size="50"
+      color="primary"
+      indeterminate
+    ></v-progress-circular>
   </v-layout>
 </template>
 
@@ -42,15 +51,18 @@ export default {
       projectId: this.$route.params.id,
       presenter: new SprintPresenter(),
       projectState: projectStore.state,
-      items: [],
+      show_progress: true,
+      items: null,
     }
   },
   beforeMount() {
     new ProjectPresenter().selectProject(this.projectId)
     this.presenter.read(this.projectId).then((data) => {
+      this.show_progress = false
       this.items = data;
     }).catch((error) => {
         this.items = []
+        this.show_progress = false
     })
   },
   methods: {

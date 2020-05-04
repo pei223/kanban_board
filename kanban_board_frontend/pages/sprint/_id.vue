@@ -86,7 +86,7 @@ export default {
         if (this._isNewSprint()) {
             this.presenter.create(this.sprint_name, this.selected_project_id).then((result)=>{
                 this.presenter.read()
-                this.$parent.$router.push(`/backlog/${this.id}`);
+                this.$parent.$router.push(`/sprint_list/${this.projectState.selected_id}`);
             }).catch((error) => {
               window.alert("スプリント登録に失敗しました.")
               this.show_progress = false
@@ -106,7 +106,7 @@ export default {
           return
         }
         this.presenter.delete(this.id).then((result) => {
-          this.$parent.$router.push(`/projects`);
+          this.$parent.$router.push(`/sprint_list/${this.projectState.selected_id}`);
         }).catch((error) => {
           this.show_progress = false
           window.alert("プロジェクト削除に失敗しました.")

@@ -1,6 +1,8 @@
 from django.db import models
-from django.db.models import Max
+from django.db.models import Max, QuerySet
 from enum import Enum
+
+from rest_framework.exceptions import NotFound, ValidationError, MethodNotAllowed
 
 
 class TicketStatus(Enum):
@@ -21,13 +23,39 @@ class TicketQuerySet(models.QuerySet):
     def active_sprint_tickets(self, project_id: int):
         return self.filter(sprint_id__is_active=True, sprint_id__project_id=project_id)
 
+    def sprint_tickets(self, sprint_id: int):
+        return self.filter(sprint_id=sprint_id)
+
 
 class SprintInfoQuerySet(models.QuerySet):
-    def active_sprint_name(self, project_id: int) -> str or None:
-        active_sprint_name = self.values("name").filter(is_active=True, project_id=project_id)
-        if len(active_sprint_name) == 0:
+    def get_active_sprint(self, project_id: int):
+        active_sprint = self.filter(is_active=True, project_id=project_id)
+        if len(active_sprint) == 0:
             return None
-        return active_sprint_name[0]["name"]
+        return active_sprint[0]
+
+    def sprint_list(self, project_id: int) -> QuerySet:
+        result = self.filter(project_id=project_id)
+        return result
+
+    def close_sprint(self, project_id: int):
+        active_sprint = self.get_active_sprint(project_id)
+        if active_sprint is None:
+            raise NotFound(f"Project {project_id} does not exist active sprint.")
+        active_sprint.is_closed = True
+        active_sprint.is_active = False
+        active_sprint.save()
+
+    def activate_sprint(self, sprint_id: int):
+        sprint_info = self.filter(id=sprint_id).first()
+        if sprint_info is None:
+            raise NotFound(f"Sprint {sprint_id} is not found.")
+        active_sprint = self.get_active_sprint(sprint_info.project_id)
+        if active_sprint is not None:
+            raise MethodNotAllowed("Other sprint is already activated.")
+        sprint_info.is_active = True
+        sprint_info.is_closed = False
+        sprint_info.save()
 
 
 class ProjectInfo(models.Model):

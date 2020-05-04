@@ -2,17 +2,23 @@ import { injectable } from "tsyringe";
 import axios from "axios";
 
 export default interface SprintRepository {
-  read(): any;
+  read(projectId: number): any;
   find(id: number): any;
   create(sprintName: string, projectId: number): any;
   update(id: number, sprintName: string): any;
   delete(id: number): any;
+  closeSprint(projectId: number): Promise<boolean>;
+  activateSprint(sprintId: number): Promise<boolean>;
 }
 
 @injectable()
 export class SprintRepositoryImpl implements SprintRepository {
-  async read() {
-    let result = await axios.get("/api/sprint/");
+  async read(projectId: number) {
+    let result = await axios.get("/api/sprint", {
+      params: {
+        project_id: projectId
+      }
+    });
     return result.data;
   }
 
@@ -37,7 +43,19 @@ export class SprintRepositoryImpl implements SprintRepository {
   }
 
   async delete(id: number) {
-    await axios.delete(`/api/sprint/${id}`);
+    await axios.delete(`/api/sprint/${id}/`);
+  }
+
+  async closeSprint(projectId: number) {
+    await axios.put(`/api/sprint/close/`, {
+      project_id: projectId
+    });
+    return true;
+  }
+
+  async activateSprint(sprintId: number) {
+    await axios.put(`/api/sprint/${sprintId}/activate/`);
+    return true;
   }
 }
 
@@ -81,5 +99,13 @@ export class SprintRepositoryMock implements SprintRepository {
         this.data.splice(id, 1);
       }
     });
+  }
+
+  async closeSprint(projectId: number) {
+    return true;
+  }
+
+  async activateSprint(sprintId: number) {
+    return true;
   }
 }

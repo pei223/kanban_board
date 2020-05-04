@@ -3,6 +3,7 @@ import axios from "axios";
 
 export default interface BacklogRepository {
   readActiveSprint(projectId: number): any;
+  read(sprintId: number, projectId: number): any;
   find(ticketId: number): any;
 }
 
@@ -12,6 +13,16 @@ export class BacklogRepositoryImpl implements BacklogRepository {
     let result = await axios.get("/api/ticket/active_sprint", {
       params: {
         project_id: projectId
+      }
+    });
+    return result.data;
+  }
+
+  async read(sprintId: number, projectId: number) {
+    let result = await axios.get("/api/ticket", {
+      params: {
+        project_id: projectId,
+        sprint_id: sprintId
       }
     });
     return result.data;
@@ -34,6 +45,10 @@ export class BacklogRepositoryMock implements BacklogRepository {
   }
 
   async readActiveSprint(projectId: number) {
+    return this.data;
+  }
+
+  async read(sprintId: number, projectId: number) {
     return this.data;
   }
 

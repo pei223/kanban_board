@@ -8,8 +8,8 @@ export default class SprintPresenter {
     this.repository = container.resolve("SprintRepository");
   }
 
-  async read() {
-    return this.repository.read();
+  async read(projectId: number) {
+    return this.repository.read(projectId);
   }
 
   async find(projectId: number) {
@@ -26,5 +26,13 @@ export default class SprintPresenter {
 
   async delete(id: number) {
     return this.repository.delete(id);
+  }
+
+  async closeSprint(projectId: number): Promise<boolean> {
+    return this.repository.closeSprint(projectId);
+  }
+
+  async activateSprint(sprintId: number): Promise<boolean> {
+    return this.repository.activateSprint(sprintId);
   }
 }

@@ -35,3 +35,8 @@ class SprintInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = SprintInfo
         fields = ("id", 'name', 'is_closed', 'is_active', "project_id")
+        # 更新時には必須ではないためnot requiredにする
+        extra_kwargs = {
+            "name": {'required': False},
+            'project_id': {'required': False}
+        }

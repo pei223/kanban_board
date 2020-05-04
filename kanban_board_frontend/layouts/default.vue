@@ -14,7 +14,7 @@
       :selected_project_id="projectState.selected_id" />
     <v-content>
       <v-container>
-        <nuxt />
+        <nuxt :key="$route.fullPath" />
       </v-container>
     </v-content>
   </v-app>
