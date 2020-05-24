@@ -18,7 +18,7 @@ export default class ProjectPresenter {
     projectStore.setSelectedId(projectId);
   }
 
-  async find(projectId: number) {
+  async find(projectId: number): Promise<JSON> {
     let projects = projectStore.state.projects.filter(project => {
       return project["id"] === projectId;
     });

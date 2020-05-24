@@ -2,15 +2,15 @@ import { injectable } from "tsyringe";
 import axios from "axios";
 
 export default interface BacklogRepository {
-  readActiveSprint(projectId: number): any;
-  read(sprintId: number, projectId: number): any;
-  find(ticketId: number): any;
-  update(id: number, ticket: JSON): any;
+  readActiveSprint(projectId: number): Promise<Array<JSON>>;
+  read(sprintId: number, projectId: number): Promise<Array<JSON>>;
+  find(ticketId: number): Promise<JSON>;
+  update(id: number, ticket: JSON): Promise<boolean>;
 }
 
 @injectable()
 export class BacklogRepositoryImpl implements BacklogRepository {
-  async readActiveSprint(projectId: number) {
+  async readActiveSprint(projectId: number): Promise<Array<JSON>> {
     let result = await axios.get("/api/ticket/active_sprint", {
       params: {
         project_id: projectId
@@ -19,7 +19,7 @@ export class BacklogRepositoryImpl implements BacklogRepository {
     return result.data;
   }
 
-  async read(sprintId: number, projectId: number) {
+  async read(sprintId: number, projectId: number): Promise<Array<JSON>> {
     let result = await axios.get("/api/ticket", {
       params: {
         project_id: projectId,
@@ -29,12 +29,12 @@ export class BacklogRepositoryImpl implements BacklogRepository {
     return result.data;
   }
 
-  async find(ticketId: number) {
+  async find(ticketId: number): Promise<JSON> {
     let result = await axios.get(`/api/ticket/${ticketId}`);
     return result.data;
   }
 
-  async update(id: number, ticket: JSON) {
+  async update(id: number, ticket: JSON): Promise<boolean> {
     let result = await axios.put(`/api/ticket/${id}`, ticket);
     return true;
   }
@@ -68,5 +68,7 @@ export class BacklogRepositoryMock implements BacklogRepository {
     return null;
   }
 
-  async update(id: number, ticket: JSON) {}
+  async update(id: number, ticket: JSON) {
+    return true;
+  }
 }
