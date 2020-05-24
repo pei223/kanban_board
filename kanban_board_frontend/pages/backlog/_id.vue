@@ -36,11 +36,23 @@
         </v-card-title>
         <v-list>
             <template v-for="(item, index) in tickets">
-                <TicketRow v-bind:key=index v-bind:item=item />
+                <TicketRow v-bind:key=index v-bind:item=item v-bind:project_id="projectId" />
             </template>
         </v-list>
       </v-card>
     </v-container>
+    <v-fab-transition>
+      <v-btn
+        color="red"
+        dark
+        fixed
+        bottom
+        right
+        fab
+        @click="link(`/ticket/new?project_id=${projectId}&sprint_id=${sprint_id}`)">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-fab-transition>
   </v-layout>
 </template>
 
@@ -59,7 +71,7 @@ export default {
   data() {
     return {
         backlogPresenter: new BacklogPresenter(),
-        sprint_id: this.$route.query.sprint_id,
+        sprint_id: this.isActiveSprintRequest()? null : this.$route.query.sprint_id,
         projectId: this.$route.params.id,
         project_name: "",
         sprint_name: null,
@@ -97,6 +109,7 @@ export default {
     applyResponseToData(response) {
         this.tickets = response.tickets
         this.sprint_name = response.sprint_name
+        this.sprint_id = response.sprint_id
         this.is_sprint_active = response.is_active
         this.is_sprint_closed = response.is_closed
         this.is_data_fetched = true
@@ -116,7 +129,7 @@ export default {
       }
     },
     isActiveSprintRequest() {
-      return this.sprint_id === "active"
+      return this.$route.query.sprint_id === "active"
     },
     closeSprint() {
       if (!this.is_sprint_active) {
@@ -151,6 +164,9 @@ export default {
         console.error(error.response)
         window.alert(`スプリントのアクティブ化に失敗しました。管理者に報告してください。\n${error}\n${error.response}`)
       })
+    },
+    link(path) {
+      this.$parent.$router.push(path);
     }
   },
 };

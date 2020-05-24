@@ -5,6 +5,7 @@ export default interface BacklogRepository {
   readActiveSprint(projectId: number): any;
   read(sprintId: number, projectId: number): any;
   find(ticketId: number): any;
+  update(id: number, ticket: JSON): any;
 }
 
 @injectable()
@@ -31,6 +32,11 @@ export class BacklogRepositoryImpl implements BacklogRepository {
   async find(ticketId: number) {
     let result = await axios.get(`/api/ticket/${ticketId}`);
     return result.data;
+  }
+
+  async update(id: number, ticket: JSON) {
+    let result = await axios.put(`/api/ticket/${id}`, ticket);
+    return true;
   }
 }
 
@@ -61,4 +67,6 @@ export class BacklogRepositoryMock implements BacklogRepository {
     }
     return null;
   }
+
+  async update(id: number, ticket: JSON) {}
 }

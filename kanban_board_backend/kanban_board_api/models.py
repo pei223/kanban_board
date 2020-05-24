@@ -74,13 +74,13 @@ class SprintInfo(models.Model):
 class Ticket(models.Model):
     title = models.CharField(max_length=200)
     sprint_id = models.ForeignKey(SprintInfo, on_delete=models.CASCADE)
-    description = models.TextField(blank=True)
+    description = models.TextField(blank=True, default="")
     story_point = models.PositiveSmallIntegerField()
-    kind = models.CharField(max_length=100)
+    kind = models.CharField(max_length=100, null=True)
     order = models.IntegerField()
-    release_version = models.CharField(max_length=100, blank=True)
-    tag_1 = models.CharField(max_length=100, blank=True)
-    tag_2 = models.CharField(max_length=1000, blank=True)
+    release_version = models.CharField(max_length=100, blank=True, default="")
+    tag_1 = models.CharField(max_length=100, blank=True, default="")
+    tag_2 = models.CharField(max_length=1000, blank=True, default="")
     status = models.IntegerField(default=TicketStatus.TODO.value)
 
     objects = TicketQuerySet.as_manager()

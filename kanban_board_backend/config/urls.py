@@ -17,6 +17,8 @@ from django.contrib import admin
 from django.urls import path
 from django.conf.urls import url, include
 from kanban_board_api.urls import router as kanban_board_router
+import user_auth.urls
+
 # from rest_framework.documentation import include_docs_urls
 #
 # docs_view = include_docs_urls(
@@ -27,5 +29,6 @@ from kanban_board_api.urls import router as kanban_board_router
 urlpatterns = [
     path('admin/', admin.site.urls),
     url(r'^api/', include(kanban_board_router.urls)),
+    url(r'^user_auth/', include(user_auth.urls))
     # path('docs/', docs_view),
 ]

@@ -6,7 +6,7 @@
                 <v-card-text class="text">{{ item.id }}</v-card-text>
             </v-col>
             <v-col class="mr-2">
-                <v-card-text class="ticket-title" @click="link('/ticket/' + item.id)">{{ item.title }}</v-card-text>
+                <v-card-text class="ticket-title" @click="link(`/ticket/${item.id}?project_id=${project_id}`)">{{ item.title }}</v-card-text>
             </v-col>
             <v-spacer></v-spacer>
             <v-col md="auto">
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-    props: ['item'],
+    props: ['item', 'project_id'],
     methods: {
         link(ticketId) {
             this.$router.push(ticketId)

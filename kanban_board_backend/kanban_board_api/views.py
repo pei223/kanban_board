@@ -8,9 +8,11 @@ from .models import ProjectInfo, Ticket, SprintInfo
 from .serializers import ProjectInfoSerializer, TicketSerializer, SprintInfoSerializer
 from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
+from rest_framework import permissions
 
 
 class SprintInfoViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = SprintInfo.objects.all()
     serializer_class = SprintInfoSerializer
 
@@ -50,11 +52,13 @@ class SprintInfoViewSet(viewsets.ModelViewSet):
 
 
 class ProjectInfoViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = ProjectInfo.objects.all()
     serializer_class = ProjectInfoSerializer
 
 
 class TicketViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AllowAny,)
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
@@ -86,6 +90,7 @@ class TicketViewSet(viewsets.ModelViewSet):
         result = {"tickets": tickets}
         if sprint_info is None:
             raise NotFound()
+        result["sprint_id"] = sprint_info.id
         result["sprint_name"] = sprint_info.name
         result["is_active"] = sprint_info.is_active
         result["is_closed"] = sprint_info.is_closed

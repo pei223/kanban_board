@@ -8,7 +8,7 @@ export default class BacklogPresenter {
     this.repository = container.resolve("BacklogRepository");
   }
 
-  readActiveSprint(projectId: number): any {
+  async readActiveSprint(projectId: number): any {
     return this.repository.readActiveSprint(projectId);
   }
 
@@ -18,5 +18,9 @@ export default class BacklogPresenter {
 
   async find(ticketId: number) {
     return this.repository.find(ticketId);
+  }
+
+  async update(id: number, ticket: JSON) {
+    return this.repository.update(id, ticket);
   }
 }
