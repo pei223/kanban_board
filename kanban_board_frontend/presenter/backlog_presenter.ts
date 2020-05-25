@@ -20,7 +20,15 @@ export default class BacklogPresenter {
     return this.repository.find(ticketId);
   }
 
+  async create(ticket: JSON) {
+    return this.repository.create(ticket);
+  }
+
   async update(id: number, ticket: JSON): Promise<boolean> {
     return this.repository.update(id, ticket);
+  }
+
+  async delete(id: number): Promise<boolean> {
+    return this.repository.delete(id);
   }
 }

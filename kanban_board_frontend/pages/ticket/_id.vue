@@ -38,9 +38,28 @@
                 <span v-if="isNewTicket()">登録</span>
                 <span v-else>更新</span>
               </v-btn>
+              <v-btn v-if="!isNewTicket()" color="error" class="ml-6" @click="show_confirm_delete_dialog=true">
+                削除
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-container>
+
+        <v-dialog
+          v-model="show_confirm_delete_dialog"
+          width="300">
+          <v-card>
+            <v-card-title primary-title>チケット削除</v-card-title>
+            <v-card-text>
+              チケット　{{ ticket_title }}　を削除します。よろしいですか？
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn @click="show_confirm_delete_dialog=false">いいえ</v-btn>
+              <v-btn @click="onDeleteClicked()" color="error" class="ml-6">はい</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-layout>
   </div>
 </template>
@@ -57,16 +76,18 @@ export default {
       id: this.$route.params.id,
       presenter: new BacklogPresenter(),
       loading: false,
+      show_confirm_delete_dialog: false,
       sprints: [],
       ticket_title: null,
       sprint_id: this.$route.query.sprint_id,
       project_id: this.$route.query.project_id,
       description: "",
-      kind: "",
+      kind: "実装",
       release_version: "",
-      story_point: null,
+      story_point: 1,
       tag1: "",
       tag2: "",
+      status: 1,
     };
   },
   beforeMount() {
@@ -100,16 +121,36 @@ export default {
       new SprintPresenter().read(this.project_id).then((data) => {
         this.sprints = data
       }).catch((error) => {
-        console.log(error.response)
+        console.error(error.response)
         // TODO エラー処理
       })
     },
     submit() {
       let packedInfo = this.packTicketInfo()
+      if (this.isNewTicket()) {
+        this.presenter.create(packedInfo).then((result) => {
+          this.$router.push(`/backlog/${this.project_id}?sprint_id=${this.sprint_id}`)
+        }).catch((error) => {
+          window.alert(`チケット更新に失敗しました. 管理者に報告してください.\n${error}`)
+          console.error(error.response)
+        })
+        return
+      }
       this.presenter.update(this.id, packedInfo).then((result) => {
-
+        // TODO 完了ダイアログ
       }).catch((error) => {
         window.alert(`チケット更新に失敗しました. 管理者に報告してください.\n${error}`)
+        console.error(error.response)
+      })
+    },
+    onDeleteClicked() {
+      if (this.isNewTicket()) {
+        return
+      }
+      this.presenter.delete(this.id).then((result) => {
+        this.$router.push(`/backlog/${this.project_id}?sprint_id=${this.sprint_id}`)
+      }).catch((error) => {
+        window.alert(`チケット削除に失敗しました. 管理者に報告してください.\n${error}`)
         console.error(error.response)
       })
     },
@@ -118,7 +159,7 @@ export default {
     },
     packTicketInfo() {
       return {
-        title: this.title,
+        title: this.ticket_title,
         sprint_id: this.sprint_id,
         description: this.description,
         story_point: this.story_point,

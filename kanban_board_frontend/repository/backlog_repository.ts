@@ -5,7 +5,9 @@ export default interface BacklogRepository {
   readActiveSprint(projectId: number): Promise<Array<JSON>>;
   read(sprintId: number, projectId: number): Promise<Array<JSON>>;
   find(ticketId: number): Promise<JSON>;
+  create(ticket: JSON): Promise<boolean>;
   update(id: number, ticket: JSON): Promise<boolean>;
+  delete(id: number): Promise<boolean>;
 }
 
 @injectable()
@@ -34,8 +36,18 @@ export class BacklogRepositoryImpl implements BacklogRepository {
     return result.data;
   }
 
+  async create(ticket: JSON): Promise<boolean> {
+    await axios.post("/api/ticket/", ticket);
+    return true;
+  }
+
   async update(id: number, ticket: JSON): Promise<boolean> {
-    let result = await axios.put(`/api/ticket/${id}`, ticket);
+    let result = await axios.put(`/api/ticket/${id}/`, ticket);
+    return true;
+  }
+
+  async delete(id: number): Promise<boolean> {
+    await axios.delete(`/api/ticket/${id}`);
     return true;
   }
 }
@@ -58,6 +70,10 @@ export class BacklogRepositoryMock implements BacklogRepository {
     return this.data;
   }
 
+  async create(ticket: JSON) {
+    return true;
+  }
+
   async find(id: number) {
     let findedData = this.data.filter(row => {
       return id === row.id;
@@ -69,6 +85,10 @@ export class BacklogRepositoryMock implements BacklogRepository {
   }
 
   async update(id: number, ticket: JSON) {
+    return true;
+  }
+
+  async delete(id: number) {
     return true;
   }
 }

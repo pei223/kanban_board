@@ -1,15 +1,12 @@
 <template>
     <v-card class="pt-2">
-     <v-container class="grey lighten-5">
+     <v-container class="grey lighten-5 pt-1 pb-1 pl-6 pr-6">
          <v-row>
-            <v-col class="mr-2" md="auto">
-                <v-card-text class="text">{{ item.id }}</v-card-text>
-            </v-col>
-            <v-col class="mr-2">
+            <v-col cols=10 class="mr-2 pa-0">
                 <v-card-text class="ticket-title" @click="link(`/ticket/${item.id}?project_id=${project_id}`)">{{ item.title }}</v-card-text>
             </v-col>
             <v-spacer></v-spacer>
-            <v-col md="auto">
+            <v-col md="auto" class="pa-0">
                 <v-chip class="ma-2">
                     {{ item.story_point }}
                 </v-chip>
